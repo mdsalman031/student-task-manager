@@ -1,0 +1,17 @@
+{
+  "name": "student-task-manager",
+  "version": "1.0.0",
+  "description": "A tiny web app for students to manage tasks, used for DevOps teaching.",
+  "main": "public/app.js",
+  "scripts": {
+    "test": "node tests/app.test.js",
+    "build": "node scripts/build.js",
+    "start": "node scripts/serve.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {},
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Task Manager</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Student Task Manager</h1>
+  </header>
+  <main class="container">
+    <form id="taskForm" class="task-input" aria-label="Add a task" novalidate>
+      <label for="title">Task title</label>
+      <input type="text" id="title" placeholder="e.g. Review lecture notes" maxlength="120" required />
+      <label for="description">Description (optional)</label>
+      <input type="text" id="description" placeholder="Add a few details" maxlength="500" />
+      <button class="primary" type="submit">Add Task</button>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+    </form>
+    <section class="filters" aria-label="Filter tasks">
+      <button class="filter active" data-filter="all" type="button" aria-pressed="true">All</button>
+      <button class="filter" data-filter="pending" type="button" aria-pressed="false">Pending</button>
+      <button class="filter" data-filter="completed" type="button" aria-pressed="false">Completed</button>
+    </section>
+    <section class="counters" aria-label="Task counts">
+      <span id="totalCount">Total: 0</span>
+      <span id="pendingCount">Pending: 0</span>
+      <span id="completedCount">Completed: 0</span>
+    </section>
+    <ul id="taskList" class="task-list" aria-live="polite"></ul>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+---
+- name: Deploy Student Task Manager on Ubuntu or Debian
+  hosts: web
+  become: true
+  vars:
+    app_image: "docker.io/YOUR_DOCKERHUB_USERNAME/student-task-manager:latest"
+    app_container: student-task-manager
+    app_host_port: 8080
+
+  tasks:
+    - name: Install Docker and Python Docker SDK dependencies
+      ansible.builtin.apt:
+        name:
+          - docker.io
+          - python3-docker
+        state: present
+        update_cache: true
+
+    - name: Ensure Docker is enabled and running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Run the application container
+      community.docker.docker_container:
+        name: "{{ app_container }}"
+        image: "{{ app_image }}"
+        state: started
+        pull: true
+        restart_policy: unless-stopped
+        published_ports:
+          - "{{ app_host_port }}:8080"

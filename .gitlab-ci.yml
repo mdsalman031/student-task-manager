@@ -1,0 +1,66 @@
+stages:
+  - test
+  - package
+  - image
+  - deploy
+
+default:
+  image: node:20-alpine
+
+test:
+  stage: test
+  script:
+    - npm ci
+    - npm test
+
+package:
+  stage: package
+  needs:
+    - test
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+container-image:
+  stage: image
+  image: docker:27-cli
+  services:
+    - name: docker:27-dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: /certs
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  needs:
+    - test
+    - package
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: on_success
+    - when: never
+
+deploy-azure-aci:
+  stage: deploy
+  image: mcr.microsoft.com/azure-cli:latest
+  needs:
+    - container-image
+  script:
+    - az login --service-principal --username "$AZURE_CLIENT_ID" --password "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+    - az account set --subscription "$AZURE_SUBSCRIPTION_ID"
+    - az container create --resource-group "$AZURE_RESOURCE_GROUP" --name "$ACI_NAME" --image "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" --registry-username "$ACI_REGISTRY_USERNAME" --registry-password "$ACI_REGISTRY_PASSWORD" --dns-name-label "$ACI_DNS_LABEL" --ports 8080 --cpu 1 --memory 1
+  environment:
+    name: azure-aci
+    url: http://$ACI_DNS_LABEL.$AZURE_LOCATION.azurecontainer.io:8080
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+      allow_failure: true

@@ -1,0 +1,5 @@
+[web]
+YOUR_SERVER_IP ansible_user=YOUR_SSH_USER
+
+[web:vars]
+ansible_become=true
