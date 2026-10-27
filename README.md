@@ -481,34 +481,6 @@ minikube stop
 
 Also delete any Swarm stack, VM, ACI instance, cloud disk/IP, or test host resources created for a demo.
 
-## Viva preparation — 25 questions
-
-1. **What is DevOps?** A culture and set of practices that connect development and operations through collaboration, automation, and feedback.
-2. **How does Agile differ from DevOps?** Agile organizes iterative product development; DevOps extends collaboration and automation through delivery and operation.
-3. **What is CI?** Automatically integrating changes and validating them frequently.
-4. **What is CD?** Continuous Delivery keeps validated changes releasable; Continuous Deployment automatically releases them to production.
-5. **What is Gitflow?** A branch convention using main/develop and short-lived feature, release, and hotfix branches.
-6. **What are staging and a commit?** Staging selects changes for the next snapshot; a commit records that snapshot in history.
-7. **What is a merge conflict?** Git cannot automatically reconcile overlapping edits; a person resolves and tests the combined result.
-8. **What is Jenkins?** An automation server that runs pipeline steps such as checkout, tests, builds, and deployments.
-9. **Why is npm used?** It provides project scripts and reproducible dependency installation from package metadata and lockfile.
-10. **Why is there no test framework dependency?** Node.js includes a built-in test runner sufficient for this small logic suite.
-11. **What happens when a test fails in CI?** The command exits unsuccessfully and dependent package/image/deploy stages do not proceed.
-12. **What is a Docker image versus a container?** The image is the packaged template; a container is its running instance.
-13. **What is a Docker registry?** A service for storing and distributing container images.
-14. **What does port mapping do?** It connects a host port to a port inside a container.
-15. **What is Docker Compose?** A declarative way to configure and run one or more related containers.
-16. **Why use a non-root container?** It reduces impact if the app process is compromised.
-17. **What is Kubernetes?** A platform that schedules and manages containerized workloads and their desired state.
-18. **Deployment versus Service?** Deployment manages Pods/replicas; Service gives selected Pods a stable network endpoint.
-19. **What is a readiness probe?** A check used to decide whether a Pod should receive traffic.
-20. **How do Kubernetes rollbacks work?** `kubectl rollout undo` reverts a Deployment to a prior revision.
-21. **Kubernetes versus Swarm?** Both orchestrate containers; Swarm is Docker-integrated and simpler, Kubernetes offers a larger ecosystem and richer controls.
-22. **What is Ansible?** An agentless automation/configuration tool commonly using SSH and declarative playbooks.
-23. **How do Puppet and SaltStack operate?** Commonly through a Puppet Server/agent model and Salt master/minion model, respectively; both can also support local/application modes.
-24. **Where should pipeline credentials be stored?** In protected CI credential stores, not source files, images, or logs.
-25. **Why use browser localStorage?** It keeps this demo small and serverless; it is local to one browser and is not a shared database.
-
 ## License
 
 MIT; see [LICENSE](./LICENSE).
